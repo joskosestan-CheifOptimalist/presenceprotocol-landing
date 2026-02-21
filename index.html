@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presence Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06070d;
+      --card: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.15);
+      --text: #ffffff;
+      --text-dim: rgba(255, 255, 255, 0.7);
+      --accent: #8b5cf6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+    }
+    main { min-height: 100vh; }
+    a { text-decoration: none; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .hero {
+      padding: 4rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .hero small {
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: rgba(255,255,255,0.6);
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin: 0;
+    }
+    .hero p {
+      max-width: 720px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .btn-primary {
+      background: var(--text);
+      color: #000;
+      padding: 0.85rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--text);
+      padding: 0.85rem 1.5rem;
+      border-radius: 999px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.5rem;
+    }
+    .stat-card h3 { margin: 0; font-size: 2rem; }
+    .stat-card p { margin-top: 0.5rem; color: var(--text-dim); }
+
+    section {
+      padding: 3.5rem 0;
+    }
+    .section-heading {
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+    }
+    h2 { margin: 0.5rem 0 1rem; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.2rem;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .flow-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1rem;
+      background: rgba(255,255,255,0.03);
+    }
+    .flow-card span {
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .builder-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+    .builder-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 1.2rem;
+    }
+
+    .cta {
+      text-align: center;
+      padding: 4rem 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .cta h3 { margin-top: 0; }
+    .cta p { color: var(--text-dim); margin-bottom: 2rem; }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: rgba(255,255,255,0.5);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero container">
+      <small>Presence Protocol</small>
+      <h1>Proof-of-participation infrastructure for real-world encounters.</h1>
+      <p>
+        Presence Protocol turns mutual proximity into verifiable primitives. Every encounter is dual-signed,
+        queued offline, verified on infrastructure-grade backends, and surfaced to builders through a clean telemetry contract.
+      </p>
+      <div class="hero-buttons">
+        <a class="btn-primary" href="#builders">Join the builder program</a>
+        <a class="btn-secondary" href="#docs">Download protocol brief</a>
+      </div>
+      <div class="stats">
+        <div class="stat-card">
+          <h3>12.4M+</h3>
+          <p>Verified encounters (lifetime)</p>
+        </div>
+        <div class="stat-card">
+          <h3>380+</h3>
+          <p>Builders in ecosystem</p>
+        </div>
+        <div class="stat-card">
+          <h3>99.3%</h3>
+          <p>Average sync success rate</p>
+        </div>
+        <div class="stat-card">
+          <h3>57M</h3>
+          <p>Telemetry events per day</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <p class="section-heading">Protocol stack</p>
+      <div class="grid-2">
+        <div>
+          <h2>Four composable modules, one protocol.</h2>
+          <p>
+            Presence Protocol isn’t a single mining app—it’s an infrastructure stack with explicit boundaries:
+            encounter capture, relay, verification, and SDK tooling. Mix-and-match modules or build the next layer on top.
+          </p>
+        </div>
+        <div class="module-card">
+          <h3>Presence Engine</h3>
+          <p>Deterministic BLE handshake converting mutual proximity into signed encounters.</p>
+          <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
+          <h3>Relay Network</h3>
+          <p>Store/forward infrastructure for offline-first sync, fraud checks, and witness attestations.</p>
+          <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
+          <h3>Reward Verification</h3>
+          <p>Backends enforce invariants, execute cooldown policy, and issue rewards only after verification.</p>
+          <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
+          <h3>Builder SDK</h3>
+          <p>Typed APIs + tooling for mining apps, diagnostics dashboards, and third-party integrations.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <p class="section-heading">Telemetry flow</p>
+      <h2>Deterministic encounter lifecycle.</h2>
+      <div class="flow-grid">
+        <div class="flow-card">
+          <span>Scan</span>
+          <p>Duty-cycled BLE scanning discovers other Presence devices.</p>
+        </div>
+        <div class="flow-card">
+          <span>Handshake</span>
+          <p>Mutual key exchange + signatures prove proximity without GPS.</p>
+        </div>
+        <div class="flow-card">
+          <span>Queue</span>
+          <p>Immutable payload stored locally until connectivity returns.</p>
+        </div>
+        <div class="flow-card">
+          <span>Verify</span>
+          <p>Backend enforces signatures, cooldown policies, and telemetry rules.</p>
+        </div>
+        <div class="flow-card">
+          <span>Reward</span>
+          <p>Accepted encounters issue receipts; telemetry emits state changes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="builders" class="container">
+      <p class="section-heading">Builder ecosystem</p>
+      <h2>SDKs, telemetry contracts, and reference apps.</h2>
+      <p>
+        Reference apps (Presence Miner, Relay, Wallet) prove the protocol. Builders can fork them or start from low-level SDKs.
+        Every module ships with deterministic tests, KCS-aware fee logic, and telemetry events.
+      </p>
+      <div class="builder-grid">
+        <div class="builder-card">
+          <h4>SDK & Types</h4>
+          <p>Typed Rust/Python SDKs expose encounter events, telemetry, and fee accounting.</p>
+        </div>
+        <div class="builder-card">
+          <h4>Telemetry Contracts</h4>
+          <p>Standard event schemas for encounter_signed, queued, accepted, rejected, rewarded.</p>
+        </div>
+        <div class="builder-card">
+          <h4>KCS Fee Optimization</h4>
+          <p>Maker-first execution + KCS reserve reduce friction for every strategy.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="docs" class="cta">
+      <h3>Ready to verify participation?</h3>
+      <p>Download the protocol brief, spin up the telemetry sandbox, and join the next cohort of builders.</p>
+      <div class="hero-buttons" style="justify-content:center;">
+        <a class="btn-primary" href="mailto:hello@presenceprotocol.ai">Contact the protocol team</a>
+        <a class="btn-secondary" href="/protocol-brief.pdf">Download brief</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Presence Protocol © <span id="year"></span> · Infrastructure for verifiable participation.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
