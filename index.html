@@ -6,7 +6,9 @@
   <title>Presence Protocol</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
   --olive: #3D4A2E;
@@ -51,7 +53,7 @@
       margin: 0;
       background: var(--cream);
       color: var(--dark);
-      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-family: "Cormorant Garamond", serif;
     }
     main { min-height: 100vh; }
     a { text-decoration: none; }
@@ -192,6 +194,59 @@
       font-size: 0.85rem;
       background: var(--cream);
     }
+
+    /* ---------------------------- */
+    /* WHITEPAPER TYPOGRAPHY SYSTEM */
+    /* ---------------------------- */
+    body {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .hero h1 {
+      font-family: "Cinzel", serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--olive);
+    }
+
+    h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 600;
+      color: var(--olive);
+    }
+
+    .hero p {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--mid);
+    }
+
+    .module-card h3,
+    .builder-card h3 {
+      font-family: "Source Sans 3", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: var(--olive);
+    }
+
+    .flow-card span,
+    .section-heading,
+    .hero small,
+    footer {
+      font-family: "Source Sans 3", sans-serif;
+      font-weight: 600;
+    }
+
+    .stat-card h3 {
+      font-family: "Cinzel", serif;
+      font-weight: 700;
+      color: var(--olive);
+    }
+
+
   </style>
 </head>
 <body>
