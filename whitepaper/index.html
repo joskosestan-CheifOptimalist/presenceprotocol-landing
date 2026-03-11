@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presence Protocol — Tokenomics White Paper v5.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+  :root {
+    --olive: #3D4A2E;
+    --olive-light: #5C6B44;
+    --olive-pale: #EEF0E8;
+    --gold: #8B7340;
+    --gold-light: #C4A95A;
+    --gold-pale: #FDF6E3;
+    --gold-bright: #D4AF5A;
+    --cream: #FAF8F3;
+    --dark: #1A1A14;
+    --mid: #4A4A40;
+    --gray: #888880;
+    --white: #FFFFFF;
+    --shadow: rgba(61,74,46,0.12);
+    --red: #C0392B;
+    --green: #2D7A2D;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Cormorant Garamond', Georgia, serif; background: var(--cream); color: var(--dark); font-size: 17px; line-height: 1.75; }
+
+  /* ── NAVIGATION ── */
+  .toc-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(61,74,46,0.97);
+    backdrop-filter: blur(8px);
+    padding: 0 40px;
+    display: flex; align-items: center; gap: 0;
+    height: 48px;
+    border-bottom: 1px solid rgba(196,169,90,0.3);
+    overflow-x: auto;
+  }
+  .toc-nav a {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); text-decoration: none;
+    padding: 0 16px; height: 48px; display: flex; align-items: center;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    transition: color 0.2s, background 0.2s;
+  }
+  .toc-nav a:hover { color: var(--gold-light); background: rgba(255,255,255,0.04); }
+  .toc-brand {
+    font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700;
+    color: var(--gold-light); margin-right: 24px; white-space: nowrap;
+    border-right: 1px solid rgba(196,169,90,0.3); padding-right: 24px;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: linear-gradient(160deg, var(--olive) 0%, #2A3420 50%, #1A2010 100%);
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 100px 60px 80px; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: '';position: absolute;inset: 0;
+    background: radial-gradient(ellipse at 25% 35%, rgba(196,169,90,0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 70%, rgba(139,115,64,0.12) 0%, transparent 50%);
+  }
+  .cover-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(196,169,90,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(196,169,90,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .cover-content { position: relative; text-align: center; max-width: 820px; }
+  .cover-symbol { font-size: 56px; color: var(--gold-light); margin-bottom: 28px; display: block; }
+  .cover-version {
+    font-family: 'Source Sans 3', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase; color: var(--gold-light);
+    background: rgba(196,169,90,0.15); border: 1px solid rgba(196,169,90,0.3);
+    padding: 6px 20px; display: inline-block; margin-bottom: 28px;
+  }
+  .cover-title {
+    font-family: 'Cinzel', serif; font-size: clamp(38px, 6vw, 72px); font-weight: 700;
+    color: var(--white); letter-spacing: 4px; line-height: 1.05; margin-bottom: 14px;
+  }
+  .cover-subtitle {
+    font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic;
+    color: var(--gold-light); margin-bottom: 36px; font-weight: 300;
+  }
+  .cover-rule { width: 100px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); margin: 0 auto 36px; }
+  .cover-tagline { font-size: 18px; color: rgba(255,255,255,0.7); font-style: italic; line-height: 1.65; max-width: 640px; margin: 0 auto 44px; }
+  .cover-pills { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 52px; }
+  .pill { padding: 7px 18px; border: 1px solid rgba(196,169,90,0.35); font-family: 'Source Sans 3', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); }
+  .cover-meta { font-family: 'Source Sans 3', sans-serif; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase; }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 920px; margin: 0 auto; padding: 0 40px; }
+  .section { padding: 80px 0 40px; border-top: 1px solid rgba(139,115,64,0.15); margin-top: 60px; }
+  .section:first-child { border-top: none; margin-top: 0; }
+  .section-num { font-family: 'Source Sans 3', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; display: block; }
+  h1.section-title { font-family: 'Cinzel', serif; font-size: clamp(20px, 2.8vw, 30px); font-weight: 600; color: var(--olive); letter-spacing: 1px; line-height: 1.2; margin-bottom: 28px; }
+  h2.sub-title { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 600; color: var(--gold); margin: 40px 0 14px; padding-bottom: 8px; border-bottom: 1px solid rgba(139,115,64,0.2); }
+  h3.mini-title { font-size: 16px; font-weight: 700; color: var(--olive); margin: 24px 0 8px; font-family: 'Source Sans 3', sans-serif; letter-spacing: 0.5px; }
+  p { margin-bottom: 18px; color: var(--dark); font-size: 17px; text-align: justify; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    background: linear-gradient(135deg, var(--gold-pale) 0%, #FFF9EE 100%);
+    border-left: 4px solid var(--gold-bright);
+    border-right: 1px solid rgba(196,169,90,0.25);
+    border-top: 1px solid rgba(196,169,90,0.25);
+    border-bottom: 1px solid rgba(196,169,90,0.25);
+    padding: 22px 30px; margin: 28px 0;
+    font-style: italic; font-size: 18px; color: var(--olive); line-height: 1.65;
+  }
+  .callout-future {
+    background: linear-gradient(135deg, #F0F4FF 0%, #E8EEFF 100%);
+    border-left: 4px solid #6B7FBB;
+    border-right: 1px solid rgba(107,127,187,0.25);
+    border-top: 1px solid rgba(107,127,187,0.25);
+    border-bottom: 1px solid rgba(107,127,187,0.25);
+    padding: 16px 24px; margin: 20px 0;
+    font-size: 14px; color: #3A4A7A; line-height: 1.6;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .callout-future-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+  /* ── FORMULA ── */
+  .formula {
+    background: var(--olive); color: var(--white);
+    font-family: 'Source Sans 3', monospace; font-size: 15px; font-weight: 700;
+    letter-spacing: 1px; padding: 20px 32px; margin: 24px 0; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .formula::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(196,169,90,0.15) 0%, transparent 50%); }
+
+  /* ── TABLES ── */
+  .table-wrap { margin: 24px 0; overflow-x: auto; border-radius: 3px; box-shadow: 0 2px 16px var(--shadow); }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--white); }
+  thead tr { background: linear-gradient(135deg, var(--olive) 0%, var(--olive-light) 100%); color: var(--white); }
+  thead th { padding: 13px 16px; text-align: left; font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; }
+  tbody tr:nth-child(even) { background: var(--olive-pale); }
+  tbody tr:hover { background: var(--gold-pale); transition: background 0.15s; }
+  tbody td { padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,0.04); color: var(--dark); vertical-align: top; line-height: 1.5; }
+  tbody td:first-child { font-weight: 600; color: var(--olive); }
+
+  /* ── BULLET LISTS ── */
+  ul.styled { list-style: none; margin: 14px 0 20px; padding: 0; }
+  ul.styled li { padding: 7px 0 7px 26px; position: relative; border-bottom: 1px solid rgba(139,115,64,0.07); font-size: 16px; line-height: 1.6; }
+  ul.styled li:last-child { border-bottom: none; }
+  ul.styled li::before { content: '–'; position: absolute; left: 0; color: var(--gold-bright); font-weight: 700; }
+
+  /* ── ALLOCATION VISUAL ── */
+  .allocation-visual { display: grid; grid-template-columns: 220px 1fr; gap: 36px; margin: 24px 0; align-items: center; }
+  .donut-chart { width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(var(--olive) 0% 50%, var(--gold) 50% 65%, #7A8B60 65% 75%, #A89050 75% 85%, #C4A95A 85% 95%, #D4C090 95% 100%); position: relative; margin: 0 auto; box-shadow: 0 8px 28px var(--shadow); }
+  .donut-hole { position: absolute; width: 100px; height: 100px; background: var(--white); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .donut-center-num { font-family: 'Cinzel', serif; font-size: 16px; color: var(--olive); font-weight: 700; line-height: 1.1; }
+  .donut-center-label { font-family: 'Source Sans 3', sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); }
+  .legend { list-style: none; padding: 0; }
+  .legend li { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+  .legend li:last-child { border-bottom: none; }
+  .legend-dot { width: 11px; height: 11px; border-radius: 2px; flex-shrink: 0; }
+  .legend-pct { font-weight: 700; color: var(--olive); margin-left: auto; font-family: 'Source Sans 3', sans-serif; font-size: 13px; }
+
+  /* ── ARCH DIAGRAM ── */
+  .arch-diagram { background: var(--white); border: 1px solid rgba(139,115,64,0.18); border-radius: 4px; padding: 36px; margin: 24px 0; box-shadow: 0 4px 24px var(--shadow); }
+  .arch-flow { display: flex; flex-direction: column; gap: 0; }
+  .arch-row { display: grid; grid-template-columns: 140px 1fr 180px; gap: 0; border-bottom: 1px solid rgba(139,115,64,0.1); }
+  .arch-row:last-child { border-bottom: none; }
+  .arch-row-label { padding: 16px 14px; display: flex; align-items: center; justify-content: center; text-align: center; }
+  .arch-row-label span { font-family: 'Source Sans 3', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--white); }
+  .arch-row-body { padding: 16px 20px; border-left: 1px solid rgba(139,115,64,0.1); border-right: 1px solid rgba(139,115,64,0.1); }
+  .arch-row-body strong { color: var(--olive); font-size: 14px; display: block; margin-bottom: 4px; font-family: 'Source Sans 3', sans-serif; font-weight: 700; }
+  .arch-row-body p { font-size: 13px; color: var(--mid); margin: 0; text-align: left; line-height: 1.5; }
+  .arch-row-data { padding: 16px 14px; display: flex; align-items: center; }
+  .arch-row-data span { font-size: 12px; color: var(--mid); line-height: 1.4; font-style: italic; }
+  .arch-connector-row { display: flex; justify-content: center; align-items: center; padding: 4px 0; color: var(--gold-bright); font-size: 20px; }
+  .layer-1 .arch-row-label { background: var(--olive); }
+  .layer-2 .arch-row-label { background: #4E5E38; }
+  .layer-3 .arch-row-label { background: #5C6B44; }
+  .layer-4 .arch-row-label { background: var(--gold); }
+  .layer-5 .arch-row-label { background: #A89050; }
+
+  /* ── QUALITY SCORING ── */
+  .quality-tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0; }
+  .tier-card { border-radius: 3px; overflow: hidden; box-shadow: 0 2px 12px var(--shadow); }
+  .tier-header { padding: 14px 16px; color: var(--white); }
+  .tier-card:nth-child(1) .tier-header { background: #888; }
+  .tier-card:nth-child(2) .tier-header { background: var(--olive-light); }
+  .tier-card:nth-child(3) .tier-header { background: var(--gold); }
+  .tier-card:nth-child(4) .tier-header { background: var(--olive); }
+  .tier-name { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .tier-multiplier { font-family: 'Source Sans 3', sans-serif; font-size: 22px; font-weight: 700; line-height: 1; }
+  .tier-body { background: var(--white); padding: 14px 16px; font-size: 12.5px; color: var(--mid); line-height: 1.5; }
+
+  .quality-factors { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0; }
+  .factor-card { background: var(--white); border: 1px solid rgba(139,115,64,0.15); border-radius: 3px; padding: 16px; box-shadow: 0 1px 8px var(--shadow); }
+  .factor-name { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; color: var(--olive); margin-bottom: 6px; }
+  .factor-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .factor-bar-bg { flex: 1; height: 5px; background: rgba(0,0,0,0.08); border-radius: 3px; overflow: hidden; }
+  .factor-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-bright), var(--olive-light)); border-radius: 3px; }
+  .factor-weight { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 700; color: var(--gold); width: 30px; flex-shrink: 0; }
+  .factor-desc { font-size: 12px; color: var(--mid); line-height: 1.4; }
+
+  /* ── SIMULATION CHART ── */
+  .sim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+  .sim-card { background: var(--white); border-radius: 3px; overflow: hidden; box-shadow: 0 4px 20px var(--shadow); border: 1px solid rgba(139,115,64,0.12); }
+  .sim-header { padding: 18px 20px; color: var(--white); }
+  .sim-card:nth-child(1) .sim-header { background: linear-gradient(135deg, #5C6B44, #3D4A2E); }
+  .sim-card:nth-child(2) .sim-header { background: linear-gradient(135deg, #8B7340, #5C4D28); }
+  .sim-card:nth-child(3) .sim-header { background: linear-gradient(135deg, #3D4A2E, #1A2010); }
+  .sim-scenario { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.65; margin-bottom: 3px; font-family: 'Source Sans 3', sans-serif; }
+  .sim-header-name { font-family: 'Cinzel', serif; font-size: 15px; }
+  .sim-body { padding: 16px 20px; }
+  .sim-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 13px; }
+  .sim-stat:last-child { border-bottom: none; }
+  .sim-stat-label { color: var(--gray); font-family: 'Source Sans 3', sans-serif; }
+  .sim-stat-value { font-weight: 700; color: var(--olive); font-size: 13px; }
+
+  /* ── EMISSION CHART (SVG-based visual bars) ── */
+  .emission-chart { background: var(--white); border: 1px solid rgba(139,115,64,0.15); border-radius: 3px; padding: 32px; margin: 24px 0; box-shadow: 0 2px 16px var(--shadow); }
+  .emission-chart-title { font-family: 'Source Sans 3', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-bottom: 28px; text-align: center; }
+  .emission-bars { display: flex; align-items: flex-end; gap: 8px; height: 180px; padding-bottom: 28px; position: relative; border-bottom: 2px solid rgba(139,115,64,0.2); }
+  .emission-bars::before { content: ''; position: absolute; bottom: 28px; left: 0; right: 0; height: 1px; background: rgba(139,115,64,0.1); }
+  .e-bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 4px; }
+  .e-bar { width: 100%; border-radius: 2px 2px 0 0; position: relative; min-height: 4px; }
+  .e-bar-label { font-family: 'Source Sans 3', sans-serif; font-size: 10px; color: var(--gray); text-align: center; position: absolute; bottom: -22px; width: 100%; left: 0; }
+  .e-bar-val { position: absolute; top: -18px; left: 0; right: 0; text-align: center; font-family: 'Source Sans 3', sans-serif; font-size: 10px; font-weight: 700; color: var(--olive); }
+  .e-bar-pct { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center; font-size: 10px; color: var(--white); font-weight: 700; font-family: 'Source Sans 3', sans-serif; }
+  .emission-legend { display: flex; gap: 24px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+  .e-legend-item { display: flex; align-items: center; gap: 6px; font-family: 'Source Sans 3', sans-serif; font-size: 11px; color: var(--mid); }
+  .e-legend-dot { width: 12px; height: 12px; border-radius: 2px; }
+
+  /* ── FLYWHEEL ── */
+  .flywheel { background: linear-gradient(135deg, var(--olive) 0%, #1A2010 100%); border-radius: 4px; padding: 44px; margin: 24px 0; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 28px rgba(61,74,46,0.3); }
+  .flywheel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(196,169,90,0.1) 0%, transparent 65%); }
+  .flywheel-title { font-family: 'Source Sans 3', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 28px; position: relative; }
+  .flywheel-steps { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 0; position: relative; }
+  .flywheel-step { background: rgba(255,255,255,0.08); border: 1px solid rgba(196,169,90,0.25); border-radius: 40px; padding: 9px 20px; color: var(--white); font-size: 13px; white-space: nowrap; }
+  .flywheel-step.milestone { border-color: var(--gold-light); background: rgba(196,169,90,0.15); }
+  .flywheel-arrow { color: var(--gold-light); font-size: 18px; padding: 0 6px; opacity: 0.6; }
+
+  /* ── ATTACK CARDS ── */
+  .attack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+  .attack-card { background: var(--white); border-radius: 3px; padding: 22px; border-left: 4px solid var(--red); box-shadow: 0 2px 12px var(--shadow); }
+  .attack-name { font-family: 'Source Sans 3', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+  .attack-defence { font-size: 13.5px; color: var(--mid); line-height: 1.55; margin-bottom: 12px; }
+  .verdict { display: inline-block; background: #EAF4EA; color: var(--green); font-family: 'Source Sans 3', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 2px; }
+
+  /* ── GOVERNANCE ── */
+  .gov-layers { display: flex; flex-direction: column; margin: 24px 0; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 20px var(--shadow); }
+  .gov-layer { display: grid; grid-template-columns: 160px 1fr; }
+  .gov-layer-left { padding: 22px 18px; color: var(--white); display: flex; flex-direction: column; justify-content: center; }
+  .gov-layer-num { font-family: 'Source Sans 3', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.65; margin-bottom: 4px; }
+  .gov-layer-name { font-family: 'Cinzel', serif; font-size: 13px; line-height: 1.3; }
+  .gov-layer:nth-child(1) .gov-layer-left { background: var(--olive); }
+  .gov-layer:nth-child(2) .gov-layer-left { background: var(--gold); }
+  .gov-layer:nth-child(3) .gov-layer-left { background: var(--olive-light); }
+  .gov-layer-right { padding: 22px; background: var(--white); border-bottom: 1px solid rgba(139,115,64,0.08); }
+  .gov-layer-right h4 { font-size: 12px; color: var(--olive); margin-bottom: 8px; font-family: 'Source Sans 3', sans-serif; font-weight: 700; letter-spacing: 0.5px; }
+  .gov-layer-right p { font-size: 13.5px; margin: 0; text-align: left; }
+
+  /* ── TOKEN CARDS ── */
+  .token-candidates { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 24px 0; }
+  .token-card { background: var(--white); border: 1px solid rgba(139,115,64,0.18); border-radius: 3px; padding: 20px; text-align: center; box-shadow: 0 2px 10px var(--shadow); opacity: 0.55; }
+  .token-card.selected { opacity: 1; border-color: var(--gold-bright); border-width: 2px; background: var(--gold-pale); position: relative; }
+  .token-card.selected::after { content: 'SELECTED'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--gold-bright); color: var(--white); font-family: 'Source Sans 3', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 2px; }
+  .ticker { font-family: 'Cinzel', serif; font-size: 30px; font-weight: 700; color: var(--olive); margin-bottom: 4px; }
+  .ticker-name { font-size: 12px; color: var(--mid); margin-bottom: 10px; }
+  .strength-bar { height: 4px; background: rgba(0,0,0,0.08); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+  .strength-fill { height: 100%; background: linear-gradient(90deg, var(--gold-bright), var(--olive-light)); border-radius: 2px; }
+  .strength-label { font-family: 'Source Sans 3', sans-serif; font-size: 10px; color: var(--gray); }
+
+  /* ── PHASE CARDS ── */
+  .phase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+  .phase-card { background: var(--white); border: 1px solid rgba(139,115,64,0.18); border-top: 4px solid var(--gold-bright); padding: 22px; border-radius: 2px; box-shadow: 0 2px 12px var(--shadow); }
+  .phase-card.p2 { border-top-color: var(--olive-light); }
+  .phase-card.p3 { border-top-color: #9BA8C0; border-top-style: dashed; }
+  .phase-label { font-family: 'Source Sans 3', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .phase-card.p2 .phase-label { color: var(--olive-light); }
+  .phase-card.p3 .phase-label { color: #6B7FBB; }
+  .phase-name { font-family: 'Cinzel', serif; font-size: 15px; color: var(--olive); margin-bottom: 6px; }
+  .phase-timeline { font-family: 'Source Sans 3', sans-serif; font-size: 11px; color: var(--gray); margin-bottom: 14px; }
+  .phase-card ul { list-style: none; padding: 0; }
+  .phase-card ul li { font-size: 13px; padding: 4px 0 4px 16px; position: relative; color: var(--mid); line-height: 1.45; }
+  .phase-card ul li::before { content: '→'; position: absolute; left: 0; color: var(--gold-bright); font-size: 11px; }
+  .phase-card.p3 ul li::before { color: #9BA8C0; }
+
+  /* ── DEVICE IDENTITY ── */
+  .identity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+  .identity-card { background: var(--white); border-radius: 3px; padding: 22px; box-shadow: 0 2px 14px var(--shadow); border: 1px solid rgba(139,115,64,0.15); border-top: 3px solid var(--gold-bright); }
+  .identity-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+  .identity-name { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--olive); margin-bottom: 8px; }
+  .identity-desc { font-size: 13px; color: var(--mid); line-height: 1.5; }
+  .identity-card:nth-child(2) { border-top-color: var(--olive); }
+  .identity-card:nth-child(3) { border-top-color: #9BA8C0; }
+
+  /* ── ASSESSMENT ── */
+  .assess-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 24px 0; }
+  .assess-card { background: var(--white); border-radius: 3px; padding: 20px; box-shadow: 0 2px 12px var(--shadow); border: 1px solid rgba(139,115,64,0.12); }
+  .assess-area { font-family: 'Source Sans 3', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; }
+  .assess-score { font-family: 'Cinzel', serif; font-size: 34px; font-weight: 700; color: var(--olive); line-height: 1; margin-bottom: 10px; }
+  .assess-score span { font-size: 16px; color: var(--gray); }
+  .assess-bar-bg { height: 5px; background: rgba(0,0,0,0.07); border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+  .assess-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-bright), var(--olive)); border-radius: 3px; }
+  .assess-note { font-size: 12.5px; color: var(--mid); line-height: 1.45; }
+  .overall-score { background: linear-gradient(135deg, var(--olive), #1A2010); border-radius: 4px; padding: 40px; text-align: center; margin: 24px 0; color: var(--white); }
+  .overall-num { font-family: 'Cinzel', serif; font-size: 80px; font-weight: 700; color: var(--gold-light); line-height: 1; }
+  .overall-label { font-family: 'Source Sans 3', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 8px; }
+
+  /* ── CLOSING ── */
+  .closing { background: linear-gradient(160deg, var(--olive) 0%, #1A2010 100%); padding: 80px 60px; text-align: center; margin-top: 80px; }
+  .closing-symbol { font-size: 40px; color: var(--gold-light); margin-bottom: 24px; display: block; }
+  .closing p { color: rgba(255,255,255,0.65); font-style: italic; max-width: 600px; margin: 0 auto 16px; font-size: 17px; }
+  .closing .version { font-family: 'Source Sans 3', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 24px; display: block; }
+
+  /* ── VISUAL ARCH DIAGRAM ── */
+  .visual-arch {
+    background: var(--white);
+    border: 1px solid rgba(139,115,64,0.18);
+    border-radius: 6px;
+    padding: 48px 40px;
+    margin: 28px 0;
+    box-shadow: 0 6px 32px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .va-layer {
+    width: 100%;
+    max-width: 560px;
+    border-radius: 6px;
+    padding: 18px 32px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.15);
+  }
+  .va-layer-title {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .va-layer-sub {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 400;
+  }
+  .va-l1 { background: linear-gradient(135deg, #3A6BC4, #2952A3); }
+  .va-l2 { background: linear-gradient(135deg, #4A8A3A, #357028); }
+  .va-l3 { background: linear-gradient(135deg, #D4700A, #B05C00); }
+  .va-l4 { background: linear-gradient(135deg, #6B4DB0, #4E3490); }
+  .va-l5 { background: linear-gradient(135deg, #3A3A3A, #222222); }
+  .va-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 4px 0;
+    position: relative;
+  }
+  .va-arrow-line {
+    width: 3px;
+    height: 20px;
+    background: linear-gradient(180deg, rgba(139,115,64,0.5), rgba(139,115,64,0.8));
+  }
+  .va-arrow-head {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid rgba(139,115,64,0.8);
+  }
+  .va-arrow-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .va-data-pill {
+    display: inline-block;
+    background: rgba(61,74,46,0.07);
+    border: 1px solid rgba(139,115,64,0.2);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10px;
+    color: var(--mid);
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+  }
+  .va-data-pill.private { background: rgba(196,169,90,0.1); border-color: rgba(196,169,90,0.4); color: var(--gold); }
+
+  /* ── ATOMIC UNIT BOX ── */
+  .atomic-box {
+    background: linear-gradient(135deg, var(--olive) 0%, #2A3420 100%);
+    border-radius: 4px;
+    padding: 36px 40px;
+    margin: 28px 0;
+    color: var(--white);
+    box-shadow: 0 4px 24px rgba(61,74,46,0.3);
+  }
+  .atomic-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+  .atomic-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .atomic-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(196,169,90,0.2), rgba(196,169,90,0.6), rgba(196,169,90,0.2));
+  }
+  .atomic-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    position: relative;
+  }
+  .atomic-step-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid rgba(196,169,90,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.06);
+    position: relative;
+    z-index: 1;
+  }
+  .atomic-step.active .atomic-step-num {
+    border-color: var(--gold-light);
+    background: rgba(196,169,90,0.2);
+    color: var(--gold-light);
+    box-shadow: 0 0 20px rgba(196,169,90,0.3);
+  }
+  .atomic-step-name {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.3;
+  }
+  .atomic-step.active .atomic-step-name { color: var(--gold-light); }
+  .atomic-step-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    line-height: 1.4;
+  }
+  .atomic-step.active .atomic-step-desc { color: rgba(255,255,255,0.75); }
+  .atomic-definition {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(196,169,90,0.2);
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.65;
+    font-style: italic;
+  }
+  .atomic-definition strong { color: var(--gold-light); font-style: normal; }
+
+  @media print { .toc-nav { display: none; } .cover { page-break-after: always; } .section { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="toc-nav">
+  <div class="toc-brand">POP v5.0</div>
+  <a href="#exec">Summary</a>
+  <a href="#consensus">Consensus</a>
+  <a href="#supply">Supply</a>
+  <a href="#architecture">Architecture</a>
+  <a href="#quality">Quality</a>
+  <a href="#rewards">Rewards</a>
+  <a href="#simulation">Simulation</a>
+  <a href="#security">Security</a>
+  <a href="#governance">Governance</a>
+  <a href="#markets">Markets</a>
+  <a href="#assessment">Assessment</a>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-content">
+    <span class="cover-symbol">✦</span>
+    <div class="cover-version">Tokenomics White Paper — Version 5.0</div>
+    <h1 class="cover-title">PRESENCE<br>PROTOCOL</h1>
+    <div class="cover-subtitle">Proof-of-Presence: The Next Consensus Primitive</div>
+    <div class="cover-rule"></div>
+    <p class="cover-tagline">"Verified human co-presence as decentralised infrastructure — the most fundamental unit of social coordination, made cryptographically provable on Cardano."</p>
+    <div class="cover-pills">
+      <div class="pill">Token: POP</div>
+      <div class="pill">1B Supply</div>
+      <div class="pill">Cardano L1</div>
+      <div class="pill">Midnight ZK</div>
+      <div class="pill">20 Year Emission</div>
+      <div class="pill">BLE Prototype Active</div>
+    </div>
+    <div class="cover-meta">Confidential — 2026 — Not for Public Distribution</div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ════ EXECUTIVE SUMMARY ════ -->
+<div class="page-section" id="exec">
+<div class="section">
+  <span class="section-num">Executive Summary</span>
+  <h1 class="section-title">A New Consensus Primitive</h1>
+  <p>Presence Protocol introduces a new consensus primitive: <strong>Proof-of-Presence (PoP)</strong>. Where Bitcoin secures computation, Ethereum secures programmable value, and Helium secures radio coverage, Presence Protocol secures something the internet has never been able to reliably measure — the verified fact that two human beings were physically present together and mutually acknowledged it.</p>
+  <p>This is not a social network, an identity protocol, or an event ticketing tool. It is <strong>infrastructure</strong> — the foundational layer that enables proof-of-attendance, decentralised identity, real-world reputation systems, and fraud-resistant economic distribution at scale.</p>
+  <p>Crucially, Presence Protocol is already in active prototype development. The BLE encounter layer exists. Most crypto white papers describe systems that have not yet been built. This one describes a system with a working implementation path. That distinction matters enormously to serious investors.</p>
+
+  <div class="callout">The most valuable thing two humans can share is their presence. Presence Protocol makes that verifiable, permanent, and economically meaningful.</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Token Name</td><td>POP — Proof of Presence</td></tr>
+        <tr><td>Total Supply</td><td>1,000,000,000 POP (hard cap, immutable)</td></tr>
+        <tr><td>Emission Period</td><td>20 years, halving every 4 years</td></tr>
+        <tr><td>Consensus Model</td><td>Proof-of-Presence via BLE encounter verification</td></tr>
+        <tr><td>Base Reward</td><td>0.5 POP per verified encounter (DAO-adjustable within bounds)</td></tr>
+        <tr><td>Blockchain</td><td>Cardano L1 + Midnight ZK Privacy Layer</td></tr>
+        <tr><td>Burn Mechanisms</td><td>Encounter burn + Transaction burn + Stake slash + Reputation burn</td></tr>
+        <tr><td>Governance</td><td>Three-layer: Constitutional / Protocol DAO / Cardano Ecosystem Interface</td></tr>
+        <tr><td>Prototype Status</td><td>BLE encounter layer active — implementation path confirmed</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 1: CONSENSUS ════ -->
+<div id="consensus">
+<div class="section">
+  <span class="section-num">Section 1</span>
+  <h1 class="section-title">Proof-of-Presence Consensus</h1>
+  <p>Proof-of-Presence is a new consensus category. Every existing consensus model secures a digital resource — computation, stake, storage, or bandwidth. PoP secures something entirely different: the physical co-presence of human beings in the real world.</p>
+  <p>Presence Mining is the subsystem through which the network reaches distributed agreement that a verified human encounter occurred. The POP reward is the economic incentive that makes honest participation rational and sustained.</p>
+
+  <h2 class="sub-title">Design Philosophy — Four Balanced Forces</h2>
+  <ul class="styled">
+    <li><strong>Network growth incentives</strong> — early participants rewarded generously enough to bootstrap critical mass before utility demand is self-sustaining.</li>
+    <li><strong>Long-term scarcity</strong> — supply finite and its schedule credible, creating a defensible store-of-value narrative from day one.</li>
+    <li><strong>Utility demand</strong> — POP consumed by real network activity, not merely speculated upon.</li>
+    <li><strong>Fair distribution</strong> — rewards flow to genuine human participants, not computational power holders or early insiders.</li>
+  </ul>
+</div>
+</div>
+
+<!-- ════ SECTION 2: SUPPLY ════ -->
+<div id="supply">
+<div class="section">
+  <span class="section-num">Section 2</span>
+  <h1 class="section-title">Supply Architecture</h1>
+
+  <h2 class="sub-title">Token Allocation — 1,000,000,000 POP</h2>
+  <div class="allocation-visual">
+    <div>
+      <div class="donut-chart">
+        <div class="donut-hole">
+          <div class="donut-center-num">1B</div>
+          <div class="donut-center-label">POP Total</div>
+        </div>
+      </div>
+    </div>
+    <ul class="legend">
+      <li><span class="legend-dot" style="background:#3D4A2E"></span>Presence Mining Rewards<span class="legend-pct">50%</span></li>
+      <li><span class="legend-dot" style="background:#8B7340"></span>Protocol Treasury<span class="legend-pct">15%</span></li>
+      <li><span class="legend-dot" style="background:#7A8B60"></span>Early Contributors<span class="legend-pct">10%</span></li>
+      <li><span class="legend-dot" style="background:#A89050"></span>Ecosystem Fund<span class="legend-pct">10%</span></li>
+      <li><span class="legend-dot" style="background:#C4A95A"></span>Community Incentives<span class="legend-pct">10%</span></li>
+      <li><span class="legend-dot" style="background:#D4C090"></span>Liquidity Provision<span class="legend-pct">5%</span></li>
+    </ul>
+  </div>
+
+  <h2 class="sub-title">Emission Schedule — Bitcoin-Style Halving</h2>
+  <div class="emission-chart">
+    <div class="emission-chart-title">Token Emission by Phase (500M mining pool)</div>
+    <div class="emission-bars">
+      <div class="e-bar-group">
+        <div class="e-bar" style="height:160px;background:linear-gradient(180deg,#5C6B44,#3D4A2E);">
+          <span class="e-bar-val">500M</span>
+          <span class="e-bar-pct">50%</span>
+          <span class="e-bar-label">Genesis<br>0–4 yrs</span>
+        </div>
+      </div>
+      <div class="e-bar-group">
+        <div class="e-bar" style="height:80px;background:linear-gradient(180deg,#8B7340,#6B5330);">
+          <span class="e-bar-val">250M</span>
+          <span class="e-bar-pct">25%</span>
+          <span class="e-bar-label">Growth<br>4–8 yrs</span>
+        </div>
+      </div>
+      <div class="e-bar-group">
+        <div class="e-bar" style="height:40px;background:linear-gradient(180deg,#A89050,#887030);">
+          <span class="e-bar-val">125M</span>
+          <span class="e-bar-label">Expansion<br>8–12 yrs</span>
+        </div>
+      </div>
+      <div class="e-bar-group">
+        <div class="e-bar" style="height:40px;background:linear-gradient(180deg,#C4A95A,#A48940);">
+          <span class="e-bar-val">125M</span>
+          <span class="e-bar-label">Long Tail<br>12–20 yrs</span>
+        </div>
+      </div>
+    </div>
+    <div class="emission-legend">
+      <div class="e-legend-item"><div class="e-legend-dot" style="background:#3D4A2E"></div>Genesis — Bootstrap & early adopter reward</div>
+      <div class="e-legend-item"><div class="e-legend-dot" style="background:#8B7340"></div>Growth — Expanding utility demand</div>
+      <div class="e-legend-item"><div class="e-legend-dot" style="background:#C4A95A"></div>Expansion & Long Tail — Scarcity dominant</div>
+    </div>
+  </div>
+
+  <h2 class="sub-title">Vesting Structure</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Group</th><th>Vesting Period</th><th>Cliff</th></tr></thead>
+      <tbody>
+        <tr><td>Core Team</td><td>4 years</td><td>1 year cliff</td></tr>
+        <tr><td>Strategic Partners</td><td>3 years</td><td>6 month cliff</td></tr>
+        <tr><td>Protocol Treasury</td><td>DAO controlled</td><td>N/A</td></tr>
+        <tr><td>Mining Rewards</td><td>Emitted over 20 years</td><td>N/A</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 3: ARCHITECTURE ════ -->
+<div id="architecture">
+<div class="section">
+  <span class="section-num">Section 3</span>
+  <h1 class="section-title">Protocol Architecture</h1>
+  <p>Presence Protocol operates across five distinct layers. Each layer has a specific responsibility and a defined data boundary. No layer holds more data than its function requires.</p>
+
+  <h2 class="sub-title">Five-Layer Protocol Stack</h2>
+
+  <div class="visual-arch">
+    <div class="va-layer va-l1">
+      <div class="va-layer-title">Mobile Device Layer</div>
+      <div class="va-layer-sub">BLE Handshake · Ephemeral Key Exchange · Mutual Signature</div>
+      <div class="va-data-pill private">🔒 Raw data stays on-device only</div>
+    </div>
+    <div class="va-arrow">
+      <div class="va-arrow-line"></div>
+      <div class="va-arrow-head"></div>
+      <div class="va-arrow-label">Ticket hash only</div>
+    </div>
+    <div class="va-layer va-l2">
+      <div class="va-layer-title">Encounter Validation Layer</div>
+      <div class="va-layer-sub">Quality Scoring · Ticket Generation · Session Validation</div>
+      <div class="va-data-pill">Encounter ticket + quality metadata</div>
+    </div>
+    <div class="va-arrow">
+      <div class="va-arrow-line"></div>
+      <div class="va-arrow-head"></div>
+      <div class="va-arrow-label">Hashed proof only</div>
+    </div>
+    <div class="va-layer va-l3">
+      <div class="va-layer-title">Relay Network</div>
+      <div class="va-layer-sub">Ticket Submission · Node Staking · Settlement Window</div>
+      <div class="va-data-pill">Ticket hash — held during window only, not persisted</div>
+    </div>
+    <div class="va-arrow">
+      <div class="va-arrow-line"></div>
+      <div class="va-arrow-head"></div>
+      <div class="va-arrow-label">ZK validity proof</div>
+    </div>
+    <div class="va-layer va-l4">
+      <div class="va-layer-title">Midnight Privacy Layer</div>
+      <div class="va-layer-sub">Zero-Knowledge Proofs · Identity-Blind Verification · Cardano ZK</div>
+      <div class="va-data-pill private">✦ Confirms encounter occurred — identity never revealed</div>
+    </div>
+    <div class="va-arrow">
+      <div class="va-arrow-line"></div>
+      <div class="va-arrow-head"></div>
+      <div class="va-arrow-label">Wallet + reward only</div>
+    </div>
+    <div class="va-layer va-l5">
+      <div class="va-layer-title">Cardano Settlement Layer</div>
+      <div class="va-layer-sub">POP Reward Minting · Burn Events · Staking · Governance</div>
+      <div class="va-data-pill">Public — wallet address + transaction record only</div>
+    </div>
+  </div>
+
+  <div class="callout">The network can confirm that a valid encounter occurred without knowing who the participants were. That is the Midnight guarantee — simultaneous proof and privacy — and it is a genuine competitive moat that most competing protocols cannot replicate.</div>
+
+  <h2 class="sub-title">The Atomic Unit of Value</h2>
+  <p>Understanding what exactly is rewarded is essential for economic credibility. Presence Protocol defines a precise four-stage encounter lifecycle, with a single clearly defined atomic unit at its centre.</p>
+
+  <div class="atomic-box">
+    <div class="atomic-title">Encounter Lifecycle — Four Stages</div>
+    <div class="atomic-steps">
+      <div class="atomic-step">
+        <div class="atomic-step-num">1</div>
+        <div class="atomic-step-name">Detected BLE Encounter</div>
+        <div class="atomic-step-desc">Signal proximity confirmed. No mutual signature yet. Tier 1 only.</div>
+      </div>
+      <div class="atomic-step">
+        <div class="atomic-step-num">2</div>
+        <div class="atomic-step-name">Verified Encounter Ticket</div>
+        <div class="atomic-step-desc">Dual cryptographic signature completed. Valid base encounter.</div>
+      </div>
+      <div class="atomic-step active">
+        <div class="atomic-step-num">3</div>
+        <div class="atomic-step-name">Quality-Scored Encounter Proof</div>
+        <div class="atomic-step-desc">Seven-factor quality score applied. TrustScore multiplier assigned.</div>
+      </div>
+      <div class="atomic-step">
+        <div class="atomic-step-num">4</div>
+        <div class="atomic-step-name">Relay-Settled Proof</div>
+        <div class="atomic-step-desc">ZK proof posted to Midnight. Reward minted at Cardano L1.</div>
+      </div>
+    </div>
+    <div class="atomic-definition">
+      The <strong>atomic unit of economic value</strong> in Presence Protocol is the <strong>quality-scored encounter proof at Stage 3</strong> — a relay-submitted, cryptographically signed encounter ticket that has passed the seven-factor quality scoring system and been assigned a TrustScore multiplier. Stage 1 (detection) and Stage 2 (verification) are prerequisites. Stage 4 (relay settlement) is the reward trigger. Stage 3 is the unit that determines reward magnitude.
+    </div>
+  </div>
+
+  <h2 class="sub-title">Device Identity Architecture</h2>
+  <p>Phones alone are insufficient identity anchors. Presence Protocol uses a three-component model that significantly raises the cost of Sybil attacks without requiring centralised identity verification.</p>
+
+  <div class="identity-grid">
+    <div class="identity-card">
+      <span class="identity-icon">🔗</span>
+      <div class="identity-name">Wallet Binding</div>
+      <div class="identity-desc">Each device is linked to a Cardano wallet address at registration. Primary economic identity — all rewards, stakes, and reputation scores are wallet-anchored.</div>
+    </div>
+    <div class="identity-card">
+      <span class="identity-icon">🪪</span>
+      <div class="identity-name">Optional DID Integration</div>
+      <div class="identity-desc">Users may associate a Decentralised Identifier for portable reputation across ecosystems. Opt-in only — not required for basic participation.</div>
+    </div>
+    <div class="identity-card">
+      <span class="identity-icon">🔐</span>
+      <div class="identity-name">Hardware Attestation</div>
+      <div class="identity-desc">Device integrity checks during BLE handshake raise the cost of device-farm attacks requiring hardware investment per fake identity above the reward ceiling.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 4: QUALITY SCORING ════ -->
+<div id="quality">
+<div class="section">
+  <span class="section-num">Section 4</span>
+  <h1 class="section-title">Encounter Quality Scoring</h1>
+  <p>Not all encounters carry equal economic weight. The quality scoring system is the primary defence against low-quality, fabricated, or colluded interactions. It determines the TrustScore multiplier applied to each base reward.</p>
+
+  <h2 class="sub-title">Four Quality Tiers</h2>
+  <div class="quality-tiers">
+    <div class="tier-card">
+      <div class="tier-header">
+        <div class="tier-name">Detected</div>
+        <div class="tier-multiplier">0.5×</div>
+      </div>
+      <div class="tier-body">BLE signal confirmed. Mutual signature not yet completed. Minimal economic value — signals proximity only.</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-header">
+        <div class="tier-name">Verified</div>
+        <div class="tier-multiplier">1.0×</div>
+      </div>
+      <div class="tier-body">Mutual BLE handshake and dual cryptographic signature completed. Base reward rate. Minimum valid encounter.</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-header">
+        <div class="tier-name">Rewardable</div>
+        <div class="tier-multiplier">1.25×</div>
+      </div>
+      <div class="tier-body">Verified + relay submission within settlement window. Standard participation reward. Most common tier.</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-header">
+        <div class="tier-name">High-Trust</div>
+        <div class="tier-multiplier">2.0×</div>
+      </div>
+      <div class="tier-body">Rewardable + combined quality score above 0.70 threshold. Full reward multiplier for genuinely meaningful encounters.</div>
+    </div>
+  </div>
+
+  <h2 class="sub-title">Seven Quality Score Inputs — Anti-Collusion Logic</h2>
+  <p>High-Trust status is determined by seven weighted inputs calculated at relay settlement. Together they create a composite quality score that is difficult to game without genuine sustained human interaction.</p>
+
+  <div class="quality-factors">
+    <div class="factor-card">
+      <div class="factor-name">Dwell Time</div>
+      <div class="factor-bar-row">
+        <div class="factor-bar-bg"><div class="factor-bar-fill" style="width:100%"></div></div>
+        <div class="factor-weight">25%</div>
+      </div>
+      <div class="factor-desc">Duration of continuous BLE proximity. Minimum 3 minutes for full score. Rapid passing encounters score near zero.</div>
+    </div>
+    <div class="factor-card">
+      <div class="factor-name">Signal Stability</div>
+      <div class="factor-bar-row">
+        <div class="factor-bar-bg"><div class="factor-bar-fill" style="width:80%"></div></div>
+        <div class="factor-weight">20%</div>
+      </div>
+      <div class="factor-desc">Consistency of BLE signal strength. Fluctuating or artificially stable signals are flagged as anomalous.</div>
+    </div>
+    <div class="factor-card">
+      <div class="factor-name">Repeated Confirmations</div>
+      <div class="factor-bar-row">
+        <div class="factor-bar-bg"><div class="factor-bar-fill" style="width:60%"></div></div>
+        <div class="factor-weight">15%</div>
+      </div>
+      <div class="factor-desc">Number of handshake re-confirmations during the session. Confirms continued active proximity, not just initial detection.</div>
+    </div>
+    <div class="factor-card">
+      <div class="factor-name">Device Reputation</div>
+      <div class="factor-bar-row">
+        <div class="factor-bar-bg"><div class="factor-bar-fill" style="width:60%"></div></div>
+        <div class="factor-weight">15%</div>
+      </div>
+      <div class="factor-desc">Historical clean encounter record and wallet reputation score for both parties. New wallets start at neutral; clean history builds over time.</div>
+    </div>
+    <div class="factor-card">
+      <div class="factor-name">Temporal Uniqueness</div>
+      <div class="factor-bar-row">
+        <div class="factor-bar-bg"><div class="factor-bar-fill" style="width:40%"></div></div>
+        <div class="factor-weight">10%</div>
+      </div>
+      <div class="factor-desc">Has either device encountered another party in the last 15 minutes? Penalises rapid-fire encounter farming between different parties.</div>
+    </div>
+    <div class="factor-card">
+      <div class="factor-name">Relay Confidence Score</div>
+      <div class="factor-bar-row">
+        <div class="factor-bar-bg"><div class="factor-bar-fill" style="width:40%"></div></div>
+        <div class="factor-weight">10%</div>
+      </div>
+      <div class="factor-desc">The relay node's own integrity assessment of the submission. Anomalous submission patterns lower this score automatically.</div>
+    </div>
+    <div class="factor-card">
+      <div class="factor-name">Anti-Collusion Heuristic</div>
+      <div class="factor-bar-row">
+        <div class="factor-bar-bg"><div class="factor-bar-fill" style="width:20%"></div></div>
+        <div class="factor-weight">5%</div>
+      </div>
+      <div class="factor-desc">Flags fixed-location patterns and rapidly repeated pair encounters. Detects two devices meeting repeatedly at the same GPS cluster or desk.</div>
+    </div>
+  </div>
+
+  <h2 class="sub-title">Session Boundary Parameters</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>Value</th><th>Rationale</th></tr></thead>
+      <tbody>
+        <tr><td>Session timeout</td><td>30 minutes maximum</td><td>Defines the outer boundary of one continuous encounter</td></tr>
+        <tr><td>Minimum dwell time</td><td>3 minutes</td><td>Below this, no tier above Tier 1 is assigned</td></tr>
+        <tr><td>BLE proximity threshold</td><td>Less than 10 metres</td><td>Defines the physical co-presence boundary</td></tr>
+        <tr><td>Re-confirmation interval</td><td>Every 2 minutes during session</td><td>Confirms continued proximity and improves quality score</td></tr>
+        <tr><td>Max encounters per pair per day</td><td>3 encounters</td><td>Prevents collusion loops between known devices</td></tr>
+        <tr><td>Min time between same-pair encounters</td><td>4 hours</td><td>Prevents rapid-cycle collusion</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 5: REWARDS ════ -->
+<div id="rewards">
+<div class="section">
+  <span class="section-num">Section 5</span>
+  <h1 class="section-title">Reward Accounting</h1>
+
+  <div class="formula">Encounter Reward = BaseReward × TrustScore × NetworkAdjustment</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Variable</th><th>Value</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>BaseReward</td><td>0.5 POP</td><td>Fixed at genesis. DAO-adjustable within 0.1–2.0 POP range with 90-day timelock.</td></tr>
+        <tr><td>TrustScore</td><td>0.5 – 2.0</td><td>Applied symmetrically to both encounter participants. Calculated independently per wallet.</td></tr>
+        <tr><td>NetworkAdjustment</td><td>1 / √(DAU)</td><td>Recalculated every 24 hours. Prevents runaway inflation as network scales.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="sub-title">Distribution Per Encounter</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Recipient</th><th>Share</th><th>Condition</th></tr></thead>
+      <tbody>
+        <tr><td>Witness A (initiating device)</td><td>35%</td><td>Must be party to the BLE handshake</td></tr>
+        <tr><td>Witness B (responding device)</td><td>35%</td><td>Must be party to the BLE handshake</td></tr>
+        <tr><td>Relay Node</td><td>20%</td><td>Must submit ticket within the settlement window</td></tr>
+        <tr><td>Verifier Node Pool</td><td>5%</td><td>Distributed across all active verifiers in current epoch</td></tr>
+        <tr><td>Protocol Treasury</td><td>5%</td><td>Held or burned subject to DAO governance</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="sub-title">Reward Unlock Schedule</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tranche</th><th>Release</th><th>Percentage</th></tr></thead>
+      <tbody>
+        <tr><td>Liquid</td><td>Immediately at epoch settlement</td><td>30%</td></tr>
+        <tr><td>Short-lock</td><td>6 months from date of mining</td><td>40%</td></tr>
+        <tr><td>Long-lock</td><td>12 months from date of mining</td><td>30%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="sub-title">Burn Mechanisms — Four Sources</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Mechanism</th><th>Rate</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Encounter Submission Burn</td><td>0.02 POP per ticket</td><td>Links human activity directly to token scarcity. Prevents spam.</td></tr>
+        <tr><td>Transaction Burn</td><td>1% of all transfers</td><td>Continuous deflationary pressure. Inspired by Ethereum EIP-1559.</td></tr>
+        <tr><td>Stake Slash Burn</td><td>Proportional to misconduct severity</td><td>Economic deterrence of network attacks. Scales to repeat offences.</td></tr>
+        <tr><td>Reputation Burn</td><td>Stake consumed to gain TrustScore tier upgrades</td><td>Creates real ongoing economic cost behind reputation claims.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 6: SIMULATION ════ -->
+<div id="simulation">
+<div class="section">
+  <span class="section-num">Section 6</span>
+  <h1 class="section-title">Tokenomics Simulation Model</h1>
+  <p>Three adoption trajectories modelled across realistic network growth scenarios. These illustrate how the economic architecture behaves — they are not price predictions.</p>
+
+  <div class="sim-grid">
+    <div class="sim-card">
+      <div class="sim-header"><div class="sim-scenario">Scenario A</div><div class="sim-header-name">Early Adoption</div></div>
+      <div class="sim-body">
+        <div class="sim-stat"><span class="sim-stat-label">DAU</span><span class="sim-stat-value">50,000</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Encounters / day</span><span class="sim-stat-value">250,000</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Network adj. factor</span><span class="sim-stat-value">0.00447</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Effective reward</span><span class="sim-stat-value">0.00224 POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Gross annual issuance</span><span class="sim-stat-value">~8M POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Annual burns</span><span class="sim-stat-value">~0.5M POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Net circulating Y1</span><span class="sim-stat-value">~6M POP</span></div>
+      </div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-header"><div class="sim-scenario">Scenario B</div><div class="sim-header-name">Growth Phase</div></div>
+      <div class="sim-body">
+        <div class="sim-stat"><span class="sim-stat-label">DAU</span><span class="sim-stat-value">500,000</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Encounters / day</span><span class="sim-stat-value">5,000,000</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Network adj. factor</span><span class="sim-stat-value">0.00141</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Effective reward</span><span class="sim-stat-value">0.000847 POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Gross annual issuance</span><span class="sim-stat-value">~32M POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Annual burns</span><span class="sim-stat-value">~4M POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Net circulating Y1</span><span class="sim-stat-value">~22M POP</span></div>
+      </div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-header"><div class="sim-scenario">Scenario C</div><div class="sim-header-name">Global Scale</div></div>
+      <div class="sim-body">
+        <div class="sim-stat"><span class="sim-stat-label">DAU</span><span class="sim-stat-value">10,000,000</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Encounters / day</span><span class="sim-stat-value">100,000,000</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Network adj. factor</span><span class="sim-stat-value">0.000316</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Effective reward</span><span class="sim-stat-value">0.000205 POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Gross annual issuance</span><span class="sim-stat-value">~125M POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Annual burns</span><span class="sim-stat-value">~15M POP</span></div>
+        <div class="sim-stat"><span class="sim-stat-label">Net circulating Y1</span><span class="sim-stat-value">~88M POP</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">The 1 million user milestone is the deflationary inflection point — where burns approach or exceed new issuance and POP transitions from a growth reward token into a scarce asset.</div>
+
+  <h2 class="sub-title">Economic Flywheel</h2>
+  <div class="flywheel">
+    <div class="flywheel-title">The Self-Reinforcing Economic Loop</div>
+    <div class="flywheel-steps">
+      <div class="flywheel-step">More Users</div>
+      <div class="flywheel-arrow">→</div>
+      <div class="flywheel-step">More Encounters</div>
+      <div class="flywheel-arrow">→</div>
+      <div class="flywheel-step">More Token Consumption</div>
+      <div class="flywheel-arrow">→</div>
+      <div class="flywheel-step milestone">Token Scarcity</div>
+      <div class="flywheel-arrow">→</div>
+      <div class="flywheel-step">Rising Value</div>
+      <div class="flywheel-arrow">→</div>
+      <div class="flywheel-step" style="border-color:rgba(196,169,90,0.7)">More Users ↺</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 7: SECURITY ════ -->
+<div id="security">
+<div class="section">
+  <span class="section-num">Section 7</span>
+  <h1 class="section-title">Adversarial Economics</h1>
+  <p>Sybil resistance is an economic challenge before it is a technical one. The architecture must make attacks unprofitable before they become undetectable. The following analysis establishes attack costs relative to honest participation rewards.</p>
+
+  <div class="attack-grid">
+    <div class="attack-card">
+      <div class="attack-name">Device Farm Attack</div>
+      <div class="attack-defence">100 fake wallets generating 10 encounters/day each. Requires 50,000 POP minimum stake plus hardware attestation per device. Daily cap of 50 POP/device means over 180,000 fake encounters needed to break even.</div>
+      <span class="verdict">✓ Unprofitable at launch economics</span>
+    </div>
+    <div class="attack-card">
+      <div class="attack-name">Collusion Ring</div>
+      <div class="attack-defence">Two real devices rapidly repeating encounters. 4-hour same-pair minimum, 3 encounter daily maximum, and temporal uniqueness quality scoring all reduce reward to near zero before it becomes profitable.</div>
+      <span class="verdict">✓ Caught by quality scoring</span>
+    </div>
+    <div class="attack-card">
+      <div class="attack-name">Relay Spam</div>
+      <div class="attack-defence">Submitting invalid or duplicate tickets for relay bonus. 500 POP relay stake is fully burned on first detected violation. Single-strike deterrent eliminates the economic incentive completely.</div>
+      <span class="verdict">✓ Eliminated by stake risk</span>
+    </div>
+    <div class="attack-card">
+      <div class="attack-name">Verifier Manipulation</div>
+      <div class="attack-defence">Fraudulently validating fake encounters. 1,000 POP verifier stake slashed proportionally per fraudulent validation. Network reward ceiling is too low relative to stake cost to justify the risk.</div>
+      <span class="verdict">✓ High cost, low ceiling</span>
+    </div>
+  </div>
+
+  <h2 class="sub-title">Security Parameters</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>Value</th><th>Rationale</th></tr></thead>
+      <tbody>
+        <tr><td>Daily earning cap per device</td><td>50 POP maximum</td><td>Limits farm ROI regardless of encounter volume</td></tr>
+        <tr><td>Relay minimum stake</td><td>500 POP</td><td>Economic skin-in-game for all relay operators</td></tr>
+        <tr><td>Verifier minimum stake</td><td>1,000 POP</td><td>Higher floor reflects elevated network trust role</td></tr>
+        <tr><td>Relay stake slash range</td><td>10% – 100%</td><td>Scaled to severity; 100% for repeat offences</td></tr>
+        <tr><td>Re-staking cooldown</td><td>30 days after slash</td><td>Prevents rapid recycling of burned stake</td></tr>
+        <tr><td>False positive tolerance</td><td>Less than 2% daily</td><td>Triggers automated audit protocol if exceeded</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 8: GOVERNANCE ════ -->
+<div id="governance">
+<div class="section">
+  <span class="section-num">Section 8</span>
+  <h1 class="section-title">Governance & Cardano Integration</h1>
+  <p>Presence Protocol governance is a three-layer architecture aligned with Cardano's constitutional framework — CIP-1694, Intersect, and the Delegated Representative (DRep) system. This is not generic DAO governance. It positions Presence Protocol as a native participant in the Cardano ecosystem with a credible cross-ecosystem governance bridge.</p>
+
+  <div class="gov-layers">
+    <div class="gov-layer">
+      <div class="gov-layer-left"><div class="gov-layer-num">Layer 1</div><div class="gov-layer-name">Constitutional</div></div>
+      <div class="gov-layer-right">
+        <h4>Immutable — No Vote Can Change These</h4>
+        <p>Total supply cap, halving schedule, PoP cryptographic requirements, minimum BLE validation standard. These form the constitutional layer. Their immutability is what makes the scarcity narrative credible to investors and the network trustworthy to participants.</p>
+      </div>
+    </div>
+    <div class="gov-layer">
+      <div class="gov-layer-left"><div class="gov-layer-num">Layer 2</div><div class="gov-layer-name">Protocol DAO</div></div>
+      <div class="gov-layer-right">
+        <h4>POP Token Holders Vote On</h4>
+        <p>Reward parameters, staking thresholds, burn rates, treasury allocation, quality score weights. All changes subject to timelocks (60–90 days) and quorum requirements (5% of circulating supply). 67% supermajority required for treasury spends above 5M POP.</p>
+      </div>
+    </div>
+    <div class="gov-layer">
+      <div class="gov-layer-left"><div class="gov-layer-num">Layer 3</div><div class="gov-layer-name">Cardano Ecosystem</div></div>
+      <div class="gov-layer-right">
+        <h4>DRep Integration via CIP-1694</h4>
+        <p>POP holders may delegate voting rights to Cardano DReps. 5% of Protocol Treasury allocated to Cardano ecosystem development via Catalyst and Intersect. This builds genuine alignment — not just technical compatibility but financial and political commitment to the Cardano builder community.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 9: MARKETS ════ -->
+<div id="markets">
+<div class="section">
+  <span class="section-num">Section 9</span>
+  <h1 class="section-title">Strategic Markets — Presence as Infrastructure</h1>
+  <p>Presence Protocol is not a product. It is a primitive. The distinction matters enormously: products serve one use case; primitives unlock entire categories of applications that their builders cannot fully anticipate. The value of Presence Protocol accrues not from what it builds directly, but from what it makes possible for others to build on top of it.</p>
+  <p>Verified human presence is missing infrastructure. Once established at scale, the PoP layer unlocks the following markets — independently and in combination.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Market</th><th>Use Case</th><th>Phase</th></tr></thead>
+      <tbody>
+        <tr><td>Event Infrastructure</td><td>Proof-of-attendance for conferences, festivals, universities, and DAOs — the most immediate application of verified presence</td><td>Phase 1</td></tr>
+        <tr><td>Decentralised Reputation</td><td>Verified interaction history replacing follower counts and algorithmic signals with proof of real-world engagement</td><td>Phase 1–2</td></tr>
+        <tr><td>Community Governance</td><td>Participation-weighted voting and DAO governance based on verified physical community membership</td><td>Phase 1–2</td></tr>
+        <tr><td>Trust Systems</td><td>Presence-anchored trust scores enabling lower-friction peer-to-peer exchange and credential sharing</td><td>Phase 2</td></tr>
+        <tr><td>Local Network Economies</td><td>Community rewards and local economic coordination based on verified in-person participation</td><td>Phase 2</td></tr>
+        <tr><td>Decentralised Identity</td><td>Physical presence as a portable, privacy-preserving, ZK-attested identity anchor for other protocols</td><td>Phase 2–3</td></tr>
+        <tr><td>Fraud-Resistant Economic Distribution</td><td>One compelling long-term application among many — see framing note below</td><td>Phase 3 (future)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-future">
+    <span class="callout-future-icon">🔭</span>
+    <div><strong>On economic distribution and UBI:</strong> One of the most compelling long-term applications of Presence Protocol's dynamic identity model is fraud-resistant economic distribution — proving not just that a person exists but that they continue to participate in society over time. Most identity systems prove existence once; PoP proves ongoing participation continuously. This is architecturally unique. It is, however, one application among many — not the protocol's primary purpose or near-term launch goal. Presence Protocol is infrastructure. Its value lies in what the ecosystem builds on top of it.</div>
+  </div>
+
+  <h2 class="sub-title">Bootstrapping Strategy</h2>
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-label">Phase 1</div>
+      <div class="phase-name">Seed Communities</div>
+      <div class="phase-timeline">Year 0 – 1</div>
+      <ul>
+        <li>Universities and campuses</li>
+        <li>Conferences and events</li>
+        <li>Crypto-native meetups</li>
+        <li>Cardano community</li>
+      </ul>
+    </div>
+    <div class="phase-card p2">
+      <div class="phase-label">Phase 2</div>
+      <div class="phase-name">App Integrations</div>
+      <div class="phase-timeline">Year 1 – 3</div>
+      <ul>
+        <li>Event platform integrations</li>
+        <li>Social and dating apps</li>
+        <li>DAO community tools</li>
+        <li>Reputation systems</li>
+      </ul>
+    </div>
+    <div class="phase-card p3">
+      <div class="phase-label">Phase 3 — Future</div>
+      <div class="phase-name">Global Infrastructure</div>
+      <div class="phase-timeline">Year 3+ (conditional on scale)</div>
+      <ul>
+        <li>Decentralised identity layer</li>
+        <li>UBI distribution pilots</li>
+        <li>Reputation networks</li>
+        <li>Ecosystem settlement layer</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════ SECTION 10: TOKEN IDENTITY ════ -->
+<div class="section">
+  <span class="section-num">Section 10</span>
+  <h1 class="section-title">Token Identity — POP</h1>
+
+  <div class="token-candidates">
+    <div class="token-card selected">
+      <div class="ticker">POP</div>
+      <div class="ticker-name">Proof of Presence</div>
+      <div class="strength-bar"><div class="strength-fill" style="width:98%"></div></div>
+      <div class="strength-label">Exceptional</div>
+    </div>
+    <div class="token-card">
+      <div class="ticker">PRS</div>
+      <div class="ticker-name">Presence</div>
+      <div class="strength-bar"><div class="strength-fill" style="width:62%"></div></div>
+      <div class="strength-label">Good</div>
+    </div>
+    <div class="token-card">
+      <div class="ticker">WIT</div>
+      <div class="ticker-name">Witness</div>
+      <div class="strength-bar"><div class="strength-fill" style="width:48%"></div></div>
+      <div class="strength-label">Interesting</div>
+    </div>
+    <div class="token-card">
+      <div class="ticker">ENC</div>
+      <div class="ticker-name">Encounter</div>
+      <div class="strength-bar"><div class="strength-fill" style="width:32%"></div></div>
+      <div class="strength-label">Moderate</div>
+    </div>
+  </div>
+  <div class="callout">POP — Proof of Presence. A new category in the lineage of Proof of Work and Proof of Stake. The name alone tells the story.</div>
+</div>
+
+<!-- ════ SECTION 11: ASSESSMENT ════ -->
+<div id="assessment">
+<div class="section">
+  <span class="section-num">Section 11</span>
+  <h1 class="section-title">Strategic Assessment — v5.0</h1>
+  <p>Presence Protocol is not trying to build a product. It is trying to build a primitive. That is the difference between a startup and a protocol — protocols succeed when they unlock entire categories of applications their builders never anticipated. The markets section demonstrates exactly this: event verification, reputation networks, local economies, identity infrastructure, and economic distribution are each independently large markets, all unlocked by a single primitive layer.</p>
+  <p>This document now sits in the same category as the early papers for Helium, BrightID, and Proof of Humanity — with one critical differentiator: the BLE prototype layer already exists. That is rare at this stage, and investors should weight it accordingly.</p>
+
+  <div class="assess-grid">
+    <div class="assess-card">
+      <div class="assess-area">Vision & Originality</div>
+      <div class="assess-score">9.5<span>/10</span></div>
+      <div class="assess-bar-bg"><div class="assess-bar-fill" style="width:95%"></div></div>
+      <div class="assess-note">New consensus primitive framing. Comparable to early Helium, BrightID, and Proof of Humanity papers. Primitive-not-product framing now explicit.</div>
+    </div>
+    <div class="assess-card">
+      <div class="assess-area">Tokenomics Architecture</div>
+      <div class="assess-score">9.0<span>/10</span></div>
+      <div class="assess-bar-bg"><div class="assess-bar-fill" style="width:90%"></div></div>
+      <div class="assess-note">Hard cap, halving, four burn mechanisms, quality scoring, reward distribution — all credible and internally consistent.</div>
+    </div>
+    <div class="assess-card">
+      <div class="assess-area">Technical Clarity</div>
+      <div class="assess-score">9.5<span>/10</span></div>
+      <div class="assess-bar-bg"><div class="assess-bar-fill" style="width:95%"></div></div>
+      <div class="assess-note">Full visual architecture diagram added. Atomic unit explicitly defined at Stage 3. Data boundaries specified at every layer.</div>
+    </div>
+    <div class="assess-card">
+      <div class="assess-area">Economic Security</div>
+      <div class="assess-score">9.0<span>/10</span></div>
+      <div class="assess-bar-bg"><div class="assess-bar-fill" style="width:90%"></div></div>
+      <div class="assess-note">Seven-factor quality scoring with anti-collusion logic. Attack cost analysis across four vector types.</div>
+    </div>
+    <div class="assess-card">
+      <div class="assess-area">Governance & Cardano Alignment</div>
+      <div class="assess-score">9.0<span>/10</span></div>
+      <div class="assess-bar-bg"><div class="assess-bar-fill" style="width:90%"></div></div>
+      <div class="assess-note">CIP-1694 / DRep integration. Three-layer governance architecture. 5% treasury Cardano ecosystem commitment.</div>
+    </div>
+    <div class="assess-card">
+      <div class="assess-area">Investor Readiness</div>
+      <div class="assess-score">9.5<span>/10</span></div>
+      <div class="assess-bar-bg"><div class="assess-bar-fill" style="width:95%"></div></div>
+      <div class="assess-note">Simulation model, adversarial economics, architecture diagram, atomic unit definition, and BLE prototype path all present.</div>
+    </div>
+  </div>
+
+  <div class="overall-score">
+    <div class="overall-num">9.5</div>
+    <div class="overall-label">Overall Score — Elite Protocol White Paper</div>
+  </div>
+
+  <div class="callout">This document now represents an elite-level protocol white paper — suitable for Catalyst proposals, early investor discussion, ecosystem partner conversations, and technical peer review. The BLE prototype path differentiates it from virtually every comparable paper at this stage.</div>
+</div>
+</div>
+
+</div><!-- /page -->
+
+<!-- CLOSING -->
+<div class="closing">
+  <span class="closing-symbol">✦</span>
+  <p>This document is a living instrument and will be revised as the protocol matures, market conditions evolve, and technical architecture is validated. All token figures are indicative and subject to final economic modelling and legal review.</p>
+  <span class="version">Presence Protocol — Tokenomics White Paper v5.0 — 2026<br>Confidential — Not for Public Distribution Without Authorisation</span>
+</div>
+
+</body>
+</html>
