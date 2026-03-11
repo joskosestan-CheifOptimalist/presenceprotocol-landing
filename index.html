@@ -38,12 +38,21 @@
   --future: #6B7FBB;
   --future-bg-start: #F0F4FF;
   --future-bg-end: #E8EEFF;
+
+  --bg: var(--cream);
+  --card: var(--white);
+  --border: rgba(139,115,64,0.18);
+  --text: var(--dark);
+  --text-dim: var(--mid);
+  --accent: var(--gold-light);
 }
     * { box-sizing: border-box; }
     body {
-  background: var(--cream);
-  color: var(--dark);
-}
+      margin: 0;
+      background: var(--cream);
+      color: var(--dark);
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+    }
     main { min-height: 100vh; }
     a { text-decoration: none; }
     .container {
@@ -60,7 +69,7 @@
     .hero small {
       text-transform: uppercase;
       letter-spacing: 0.3em;
-      color: rgba(255,255,255,0.6);
+      color: var(--gold-light);
     }
     .hero h1 {
       font-size: clamp(2.5rem, 5vw, 4rem);
@@ -68,7 +77,7 @@
     }
     .hero p {
       max-width: 720px;
-      color: var(--text-dim);
+      color: var(--mid);
       line-height: 1.6;
     }
     .hero-buttons {
@@ -78,15 +87,17 @@
       margin-top: 1rem;
     }
     .btn-primary {
-      background: var(--text);
-      color: #000;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold-bright));
+      color: var(--dark);
       padding: 0.85rem 1.5rem;
       border-radius: 999px;
       font-weight: 600;
+      border: 1px solid rgba(139,115,64,0.18);
     }
     .btn-secondary {
-      border: 1px solid rgba(255,255,255,0.3);
-      color: var(--text);
+      border: 1px solid rgba(139,115,64,0.22);
+      color: var(--olive);
+      background: var(--gold-pale);
       padding: 0.85rem 1.5rem;
       border-radius: 999px;
     }
@@ -97,13 +108,14 @@
       margin-top: 3rem;
     }
     .stat-card {
-      background: var(--card);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 1.5rem;
+      box-shadow: 0 2px 16px rgba(61,74,46,0.08);
     }
     .stat-card h3 { margin: 0; font-size: 2rem; }
-    .stat-card p { margin-top: 0.5rem; color: var(--text-dim); }
+    .stat-card p { margin-top: 0.5rem; color: var(--mid); }
 
     section {
       padding: 3.5rem 0;
@@ -111,7 +123,7 @@
     .section-heading {
       text-transform: uppercase;
       letter-spacing: 0.3em;
-      color: rgba(255,255,255,0.6);
+      color: var(--gold);
       font-size: 0.85rem;
     }
     h2 { margin: 0.5rem 0 1rem; }
@@ -122,10 +134,11 @@
       align-items: start;
     }
     .module-card {
-      background: var(--card);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 1.2rem;
+      box-shadow: 0 2px 16px rgba(61,74,46,0.08);
     }
 
     .flow-grid {
@@ -138,13 +151,14 @@
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 1rem;
-      background: rgba(255,255,255,0.03);
+      background: var(--white);
+      box-shadow: 0 1px 10px rgba(61,74,46,0.06);
     }
     .flow-card span {
       text-transform: uppercase;
       letter-spacing: 0.3em;
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.6);
+      color: var(--gold-light);
     }
 
     .builder-grid {
@@ -154,26 +168,29 @@
       margin-top: 1.5rem;
     }
     .builder-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: var(--white);
+      border: 1px solid var(--border);
       border-radius: 20px;
       padding: 1.2rem;
+      box-shadow: 0 1px 10px rgba(61,74,46,0.06);
     }
 
     .cta {
       text-align: center;
       padding: 4rem 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(139,115,64,0.16);
+      background: linear-gradient(180deg, var(--gold-pale), var(--cream));
     }
     .cta h3 { margin-top: 0; }
-    .cta p { color: var(--text-dim); margin-bottom: 2rem; }
+    .cta p { color: var(--mid); margin-bottom: 2rem; }
 
     footer {
       text-align: center;
       padding: 1.5rem;
-      color: rgba(255,255,255,0.5);
-      border-top: 1px solid rgba(255,255,255,0.1);
+      color: var(--gray);
+      border-top: 1px solid rgba(139,115,64,0.14);
       font-size: 0.85rem;
+      background: var(--cream);
     }
   </style>
 </head>
@@ -181,31 +198,32 @@
   <main>
     <section class="hero container">
       <small>Presence Protocol</small>
-      <h1>Proof-of-participation infrastructure for real-world encounters.</h1>
+      <h1>Proof-of-Presence infrastructure for verifiable human participation.</h1>
       <p>
-        Presence Protocol turns mutual proximity into verifiable primitives. Every encounter is dual-signed,
-        queued offline, verified on infrastructure-grade backends, and surfaced to builders through a clean telemetry contract.
+        Presence Protocol transforms real-world encounters between people into cryptographically verifiable events.
+        Through privacy-preserving proximity proofs, decentralized relay infrastructure, and settlement on Cardano with
+        Midnight privacy, the protocol establishes a new primitive: <strong>Proof-of-Presence</strong>.
       </p>
       <div class="hero-buttons">
-        <a class="btn-primary" href="#builders">Join the builder program</a>
-        <a class="btn-secondary" href="#docs">Download protocol brief</a>
+        <a class="btn-primary" href="/whitepaper">Read the whitepaper</a>
+        <a class="btn-secondary" href="#builders">Explore the protocol stack</a>
       </div>
       <div class="stats">
         <div class="stat-card">
-          <h3>12.4M+</h3>
-          <p>Verified encounters (lifetime)</p>
+          <h3>1B</h3>
+          <p>Maximum token supply supporting global participation</p>
         </div>
         <div class="stat-card">
-          <h3>380+</h3>
-          <p>Builders in ecosystem</p>
+          <h3>8B</h3>
+          <p>Potential human participants</p>
         </div>
         <div class="stat-card">
-          <h3>99.3%</h3>
-          <p>Average sync success rate</p>
+          <h3>4</h3>
+          <p>Core protocol layers enabling Proof-of-Presence</p>
         </div>
         <div class="stat-card">
-          <h3>57M</h3>
-          <p>Telemetry events per day</p>
+          <h3>0</h3>
+          <p>Central identity databases required</p>
         </div>
       </div>
     </section>
@@ -214,94 +232,100 @@
       <p class="section-heading">Protocol stack</p>
       <div class="grid-2">
         <div>
-          <h2>Four composable modules, one protocol.</h2>
+          <h2>Four coordinated layers, one participation protocol.</h2>
           <p>
-            Presence Protocol isn’t a single mining app—it’s an infrastructure stack with explicit boundaries:
-            encounter capture, relay, verification, and SDK tooling. Mix-and-match modules or build the next layer on top.
+            Presence Protocol is not a single mining app. It is a modular infrastructure network that converts
+            physical proximity into verifiable digital participation through encounter capture, validation, relay,
+            privacy, and settlement.
           </p>
         </div>
         <div class="module-card">
           <h3>Presence Engine</h3>
-          <p>Deterministic BLE handshake converting mutual proximity into signed encounters.</p>
-          <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
+          <p>Deterministic proximity handshakes convert mutual physical presence into signed encounter events.</p>
+          <hr style="border-color: rgba(139,115,64,0.14); margin: 1rem 0;">
+          <h3>Encounter Validation</h3>
+          <p>Dual signatures, cooldown rules, and anomaly checks verify that participation is real and not farmed.</p>
+          <hr style="border-color: rgba(139,115,64,0.14); margin: 1rem 0;">
           <h3>Relay Network</h3>
-          <p>Store/forward infrastructure for offline-first sync, fraud checks, and witness attestations.</p>
-          <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
-          <h3>Reward Verification</h3>
-          <p>Backends enforce invariants, execute cooldown policy, and issue rewards only after verification.</p>
-          <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
-          <h3>Builder SDK</h3>
-          <p>Typed APIs + tooling for mining apps, diagnostics dashboards, and third-party integrations.</p>
+          <p>Distributed relays propagate encounter receipts for offline-first synchronization and verification.</p>
+          <hr style="border-color: rgba(139,115,64,0.14); margin: 1rem 0;">
+          <h3>Settlement &amp; Privacy</h3>
+          <p>Cardano provides transparent settlement while Midnight protects privacy-sensitive participation data.</p>
         </div>
       </div>
     </section>
 
     <section class="container">
-      <p class="section-heading">Telemetry flow</p>
-      <h2>Deterministic encounter lifecycle.</h2>
+      <p class="section-heading">Participation lifecycle</p>
+      <h2>Deterministic Proof-of-Presence flow.</h2>
       <div class="flow-grid">
         <div class="flow-card">
           <span>Scan</span>
-          <p>Duty-cycled BLE scanning discovers other Presence devices.</p>
+          <p>Devices discover nearby participants through energy-efficient proximity scanning.</p>
         </div>
         <div class="flow-card">
           <span>Handshake</span>
-          <p>Mutual key exchange + signatures prove proximity without GPS.</p>
+          <p>Ephemeral keys and dual signatures confirm mutual presence without relying on GPS identity databases.</p>
         </div>
         <div class="flow-card">
           <span>Queue</span>
-          <p>Immutable payload stored locally until connectivity returns.</p>
+          <p>Encounter receipts are stored locally so participation remains viable even when devices are offline.</p>
         </div>
         <div class="flow-card">
           <span>Verify</span>
-          <p>Backend enforces signatures, cooldown policies, and telemetry rules.</p>
+          <p>Relay infrastructure enforces protocol rules, signature validity, cooldown windows, and fraud checks.</p>
         </div>
         <div class="flow-card">
-          <span>Reward</span>
-          <p>Accepted encounters issue receipts; telemetry emits state changes.</p>
+          <span>Settle</span>
+          <p>Accepted encounters produce a verifiable participation record eligible for protocol rewards and future applications.</p>
         </div>
       </div>
     </section>
 
-    <section id="builders" class="container">
+    <section class="container" id="builders">
       <p class="section-heading">Builder ecosystem</p>
-      <h2>SDKs, telemetry contracts, and reference apps.</h2>
+      <h2>SDKs, reference clients, and infrastructure primitives.</h2>
       <p>
-        Reference apps (Presence Miner, Relay, Wallet) prove the protocol. Builders can fork them or start from low-level SDKs.
-        Every module ships with deterministic tests, KCS-aware fee logic, and telemetry events.
+        Presence Miner, relay nodes, wallet integrations, and protocol SDKs demonstrate how builders can develop on top
+        of Proof-of-Presence. Applications can use the protocol for participation mining, decentralized reputation,
+        community coordination, and fraud-resistant distribution systems.
       </p>
       <div class="builder-grid">
         <div class="builder-card">
-          <h4>SDK & Types</h4>
-          <p>Typed Rust/Python SDKs expose encounter events, telemetry, and fee accounting.</p>
+          <h3>SDK &amp; Types</h3>
+          <p>Typed interfaces expose encounter events, relay state transitions, reward accounting, and settlement receipts.</p>
         </div>
         <div class="builder-card">
-          <h4>Telemetry Contracts</h4>
-          <p>Standard event schemas for encounter_signed, queued, accepted, rejected, rewarded.</p>
+          <h3>Telemetry Contracts</h3>
+          <p>Standard schemas track lifecycle states such as signed, queued, verified, rejected, and rewarded.</p>
         </div>
         <div class="builder-card">
-          <h4>KCS Fee Optimization</h4>
-          <p>Maker-first execution + KCS reserve reduce friction for every strategy.</p>
+          <h3>Protocol Economics</h3>
+          <p>Fixed supply, emission logic, burns, staking, and participation rewards align network growth with long-term scarcity.</p>
         </div>
       </div>
     </section>
 
-    <section id="docs" class="cta">
-      <h3>Ready to verify participation?</h3>
-      <p>Download the protocol brief, spin up the telemetry sandbox, and join the next cohort of builders.</p>
+    <section class="cta">
+      <h3>Ready to participate in the Proof-of-Presence network?</h3>
+      <p>
+        Explore the whitepaper, review the architecture, and join the builders developing the first global infrastructure
+        for verifiable human participation.
+      </p>
       <div class="hero-buttons" style="justify-content:center;">
-        <a class="btn-primary" href="mailto:hello@presenceprotocol.ai">Contact the protocol team</a>
-        <a class="btn-secondary" href="/protocol-brief.pdf">Download brief</a>
+        <a class="btn-primary" href="/whitepaper">Download the whitepaper</a>
+        <a class="btn-secondary" href="mailto:hello@presenceprotocol.io">Contact the protocol team</a>
       </div>
     </section>
   </main>
 
   <footer>
-    Presence Protocol © <span id="year"></span> · Infrastructure for verifiable participation.
+    Presence Protocol © <span id="year"></span> · Proof-of-Presence infrastructure for global participation.<br>
+    Built on Cardano · Privacy powered by Midnight
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
