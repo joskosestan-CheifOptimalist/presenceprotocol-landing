@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/backend", "destination": "/backend.html" },
+    { "source": "/whitepaper", "destination": "/whitepaper/index.html" }
+  ]
+}
