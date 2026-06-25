@@ -76,6 +76,20 @@
         <p>The Presence Protocol backend receives cryptographically verified encounter anchors from mobile devices, batches them, and submits proof records to the Leios testnet. This page documents the live pipeline, API surface, and on-chain footprint.</p>
       </div>
 
+      <p class="sh">Live protocol telemetry</p>
+      <div class="grid" id="telemetry-grid">
+        <div class="card"><div class="card-label">Cumulative encounters</div><div class="card-value gold" id="stat-encounters">—</div><div class="card-sub">verified BLE handshakes</div></div>
+        <div class="card"><div class="card-label">Total CPOP issued</div><div class="card-value gold" id="stat-cpop">—</div><div class="card-sub">harmonic issuance engine</div></div>
+        <div class="card"><div class="card-label">Anchors stored</div><div class="card-value gold" id="stat-anchors">—</div><div class="card-sub">pending chain submission</div></div>
+        <div class="card"><div class="card-label">Backend uptime</div><div class="card-value gold" id="stat-uptime">—</div><div class="card-sub" id="stat-anchor-time">latest anchor —</div></div>
+      </div>
+      <div class="tx-box" style="margin-bottom:2rem;">
+        <div class="tx-label">Chain reference model</div>
+        <div style="font-size:0.95rem;line-height:1.7;color:var(--text-dim);font-family:'Source Sans 3',sans-serif;font-size:0.88rem;">
+          Presence Protocol currently anchors signed BLE encounter evidence as <strong style="color:var(--cream);">Cardano Leios testnet metadata transactions</strong>. These are public chain references to off-chain verified encounter payloads, not validated ZK proofs. ZK claim validation is planned for the Midnight layer.
+        </div>
+      </div>
+
       <p class="sh">Pipeline status</p>
       <div class="grid">
         <div class="card"><div class="card-label">Mobile layer</div><div class="card-value gold">Live</div><div class="card-sub">BLE handshake · dual P-256 signature · CPOP issuance</div></div>
@@ -130,5 +144,27 @@
     Cardano-aligned · Midnight-aware · Built with constitutional restraint
   </footer>
   <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script>
+async function loadStats() {
+  try {
+    const r = await fetch('http://192.168.1.102:3001/stats');
+    const d = await r.json();
+    document.getElementById('stat-encounters').textContent = d.cumulativeEncounters.toLocaleString();
+    document.getElementById('stat-cpop').textContent = d.totalCpopIssued.toFixed(2);
+    document.getElementById('stat-anchors').textContent = d.anchorsStored.toLocaleString();
+    const upMins = Math.floor(d.uptimeMs / 60000);
+    document.getElementById('stat-uptime').textContent = upMins < 60 ? upMins + 'm' : Math.floor(upMins/60) + 'h ' + (upMins%60) + 'm';
+    if (d.latestAnchorTimestamp) {
+      document.getElementById('stat-anchor-time').textContent = 'latest anchor ' + new Date(d.latestAnchorTimestamp).toLocaleTimeString();
+    }
+  } catch(e) {
+    ['stat-encounters','stat-cpop','stat-anchors','stat-uptime'].forEach(id => {
+      document.getElementById(id).textContent = '—';
+    });
+  }
+}
+loadStats();
+setInterval(loadStats, 30000);
+</script>
 </body>
 </html>
