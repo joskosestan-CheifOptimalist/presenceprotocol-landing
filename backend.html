@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backend Infrastructure · Presence Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--gold:#8B7340;--gold-light:#C4A95A;--gold-bright:#D4AF5A;--cream:#FAF8F3;--dark:#1A1A14;--gray:#888880;--card:#222222;--border:rgba(139,115,64,0.18);--text-dim:rgba(250,248,243,0.78);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--dark);color:var(--cream);font-family:"Cormorant Garamond",serif;}
+    a{text-decoration:none;color:var(--gold-light);}
+    a:hover{color:var(--gold-bright);}
+    .container{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
+    header{border-bottom:1px solid var(--border);padding:1.25rem 0;}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;}
+    .logo{font-family:"Cinzel",serif;font-size:1.1rem;letter-spacing:0.08em;color:var(--cream);}
+    .logo span{color:var(--gold-light);}
+    nav{display:flex;gap:2rem;font-size:0.9rem;}
+    nav a{color:var(--text-dim);}
+    nav a:hover{color:var(--gold-light);}
+    .hero{padding:3.5rem 0 2rem;border-bottom:1px solid var(--border);}
+    .hero small{text-transform:uppercase;letter-spacing:0.3em;color:var(--gold-light);font-size:0.75rem;font-family:"Source Sans 3",sans-serif;}
+    .hero h1{font-size:clamp(2rem,4vw,3rem);margin:0.5rem 0 1rem;font-weight:400;}
+    .hero p{color:var(--text-dim);font-size:1.15rem;max-width:680px;line-height:1.7;}
+    .sh{text-transform:uppercase;letter-spacing:0.25em;font-size:0.72rem;color:var(--gold-light);font-family:"Source Sans 3",sans-serif;margin-bottom:1.5rem;padding-top:3rem;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1.25rem 1.5rem;}
+    .card-label{font-size:0.75rem;font-family:"Source Sans 3",sans-serif;text-transform:uppercase;letter-spacing:0.15em;color:var(--gray);margin-bottom:0.4rem;}
+    .card-value{font-size:1.5rem;font-weight:600;color:var(--cream);}
+    .card-value.gold{color:var(--gold-bright);}
+    .card-sub{font-size:0.8rem;color:var(--gray);margin-top:0.25rem;font-family:"Source Sans 3",sans-serif;}
+    .pipeline{display:flex;flex-direction:column;gap:0;margin-bottom:3rem;}
+    .pipe-step{display:flex;align-items:flex-start;gap:1.25rem;padding:1.25rem 1.5rem;background:var(--card);border:1px solid var(--border);border-bottom:none;}
+    .pipe-step:first-child{border-radius:6px 6px 0 0;}
+    .pipe-step:last-child{border-bottom:1px solid var(--border);border-radius:0 0 6px 6px;}
+    .pipe-num{font-family:"Cinzel",serif;font-size:1.1rem;color:var(--gold-light);min-width:28px;padding-top:2px;}
+    .pipe-body h3{font-size:1rem;font-weight:600;margin-bottom:0.3rem;}
+    .pipe-body p{font-size:0.9rem;color:var(--text-dim);line-height:1.6;}
+    code{font-family:monospace;font-size:0.8rem;background:rgba(139,115,64,0.1);border:1px solid var(--border);border-radius:3px;padding:0.1rem 0.4rem;color:var(--gold-light);}
+    .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+    .dot-live{background:#2D7A2D;}
+    .dot-planned{background:var(--gray);}
+    table{width:100%;border-collapse:collapse;font-family:"Source Sans 3",sans-serif;font-size:0.88rem;margin-bottom:3rem;}
+    th{text-align:left;padding:0.6rem 1rem;background:var(--card);color:var(--gray);font-weight:400;text-transform:uppercase;letter-spacing:0.1em;font-size:0.72rem;border:1px solid var(--border);}
+    td{padding:0.75rem 1rem;border:1px solid var(--border);color:var(--text-dim);vertical-align:top;}
+    tr:hover td{background:rgba(139,115,64,0.04);}
+    .get{color:#2D7A2D;font-family:monospace;font-weight:600;}
+    .post{color:var(--gold-light);font-family:monospace;font-weight:600;}
+    .path{font-family:monospace;color:var(--cream);}
+    .tx-box{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;}
+    .tx-label{font-size:0.72rem;font-family:"Source Sans 3",sans-serif;text-transform:uppercase;letter-spacing:0.15em;color:var(--gray);margin-bottom:0.5rem;}
+    .tx-hash{font-family:monospace;font-size:0.88rem;color:var(--gold-light);word-break:break-all;}
+    .tx-meta{font-size:0.8rem;color:var(--gray);margin-top:0.4rem;font-family:"Source Sans 3",sans-serif;}
+    footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:4rem;font-size:0.82rem;color:var(--gray);font-family:"Source Sans 3",sans-serif;text-align:center;line-height:1.8;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">Presence <span>Protocol</span></a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/whitepaper">Whitepaper</a>
+        <a href="/backend">Backend</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <div class="hero">
+        <small>Infrastructure</small>
+        <h1>Backend &amp; Network Status</h1>
+        <p>The Presence Protocol backend receives cryptographically verified encounter anchors from mobile devices, batches them, and submits proof records to the Leios testnet. This page documents the live pipeline, API surface, and on-chain footprint.</p>
+      </div>
+
+      <p class="sh">Pipeline status</p>
+      <div class="grid">
+        <div class="card"><div class="card-label">Mobile layer</div><div class="card-value gold">Live</div><div class="card-sub">BLE handshake · dual P-256 signature · CPOP issuance</div></div>
+        <div class="card"><div class="card-label">Backend API</div><div class="card-value gold">Live</div><div class="card-sub">Express/TypeScript · /health · /tickets · /anchors</div></div>
+        <div class="card"><div class="card-label">Leios testnet</div><div class="card-value gold">Synced</div><div class="card-sub">100% · Dijkstra era · network magic 164</div></div>
+        <div class="card"><div class="card-label">On-chain anchors</div><div class="card-value gold">Active</div><div class="card-sub">CpopAnchorPayload · metadata label 721</div></div>
+      </div>
+
+      <p class="sh">End-to-end pipeline</p>
+      <div class="pipeline">
+        <div class="pipe-step"><div class="pipe-num">1</div><div class="pipe-body"><h3><span class="dot dot-live"></span>BLE discovery</h3><p>Two devices running the Presence Protocol app detect each other via Bluetooth Low Energy. A GATT handshake is initiated within seconds of proximity.</p></div></div>
+        <div class="pipe-step"><div class="pipe-num">2</div><div class="pipe-body"><h3><span class="dot dot-live"></span>Dual signature verification</h3><p>Each device signs the encounter payload with an ephemeral P-256 key. Both signatures are verified before any reward is issued. Unsigned or mismatched encounters are silently dropped.</p></div></div>
+        <div class="pipe-step"><div class="pipe-num">3</div><div class="pipe-body"><h3><span class="dot dot-live"></span>Ticket generation &amp; ledger credit</h3><p>A deterministic <code>encounterId</code> is derived from the handshake payload. CPOP tokens are issued via the harmonic issuance engine and credited to the local ledger.</p></div></div>
+        <div class="pipe-step"><div class="pipe-num">4</div><div class="pipe-body"><h3><span class="dot dot-live"></span>Anchor POST to backend</h3><p>SyncCoordinator serialises a <code>CpopAnchorPayload</code> and POSTs it to the backend API. The backend deduplicates by <code>anchorHash</code> and stores the record.</p></div></div>
+        <div class="pipe-step"><div class="pipe-num">5</div><div class="pipe-body"><h3><span class="dot dot-live"></span>Leios testnet submission</h3><p>Anchor payloads are submitted as metadata transactions to the Cardano Leios testnet (Dijkstra era, network magic 164) via <code>cardano-cli dijkstra transaction build/sign/submit</code>.</p></div></div>
+        <div class="pipe-step"><div class="pipe-num">6</div><div class="pipe-body"><h3><span class="dot dot-planned"></span>Midnight ZK validation</h3><p>Planned: encounter proofs submitted to Midnight Network for zero-knowledge validation. Private claim processing via Compact smart contracts. Access pending Midnight Foundation DApp Builder approval.</p></div></div>
+      </div>
+
+      <p class="sh">API endpoints</p>
+      <table>
+        <thead><tr><th>Method</th><th>Path</th><th>Purpose</th><th>Response</th></tr></thead>
+        <tbody>
+          <tr><td><span class="get">GET</span></td><td><span class="path">/health</span></td><td>Liveness check</td><td><code>{"status":"ok"}</code></td></tr>
+          <tr><td><span class="post">POST</span></td><td><span class="path">/tickets</span></td><td>Submit a signed EncounterTicket. Deduplicated by <code>sessionId</code>.</td><td>200 stored · 409 duplicate · 400 missing sessionId</td></tr>
+          <tr><td><span class="post">POST</span></td><td><span class="path">/anchors</span></td><td>Submit a CpopAnchorPayload for Leios testnet submission. Deduplicated by <code>anchorHash</code>.</td><td>200 stored · 409 duplicate · 400 missing anchorHash</td></tr>
+        </tbody>
+      </table>
+
+      <p class="sh">On-chain footprint</p>
+      <div class="tx-box">
+        <div class="tx-label">Genesis anchor transaction · Leios testnet</div>
+        <div class="tx-hash">abd5aea6aad5d27b6e989967292f25bb558665a6f663a372aebf28368070c446</div>
+        <div class="tx-meta">June 25, 2026 · Dijkstra era · epoch 26 · network magic 164 · metadata label 721 · CpopAnchorPayload</div>
+      </div>
+      <div class="tx-box">
+        <div class="tx-label">Network</div>
+        <div class="tx-hash" style="font-size:0.95rem;">Cardano Leios Testnet (Musashi Dojo) · leios.cardano-scaling.org</div>
+        <div class="tx-meta">Bootstrap relay: leios-node.play.dev.cardano.org:3001 · Network magic: 164 · Era: Dijkstra · Release: prototype-2026w25</div>
+      </div>
+
+      <p class="sh">Architecture</p>
+      <div class="grid">
+        <div class="card"><div class="card-label">Mobile</div><div class="card-value" style="font-size:1rem;margin-bottom:0.5rem;">Android (Kotlin)</div><div class="card-sub">BLE · P-256 ECDSA · CBOR framing · SyncCoordinator · PersistentMiningLedger</div></div>
+        <div class="card"><div class="card-label">Backend</div><div class="card-value" style="font-size:1rem;margin-bottom:0.5rem;">Node.js / TypeScript</div><div class="card-sub">Express · in-memory deduplication · anchor queue · cardano-cli integration</div></div>
+        <div class="card"><div class="card-label">Settlement</div><div class="card-value" style="font-size:1rem;margin-bottom:0.5rem;">Cardano / Leios</div><div class="card-sub">Dijkstra era · metadata anchors · future: Plutus validator · minting policy</div></div>
+        <div class="card"><div class="card-label">Privacy layer</div><div class="card-value" style="font-size:1rem;margin-bottom:0.5rem;">Midnight Network</div><div class="card-sub">Compact smart contracts · ZK proofs · NIGHT/DUST economics · access pending</div></div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    Presence Protocol © <span id="year"></span> · Proof of Presence infrastructure thesis for privacy-conscious real-world participation.<br>
+    Cardano-aligned · Midnight-aware · Built with constitutional restraint
+  </footer>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>
